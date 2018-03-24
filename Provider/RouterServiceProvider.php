@@ -16,7 +16,7 @@ class RouterServiceProvider extends AbstractServiceProvider
      *
      * @return void
      */
-    public function register($parameter = null) : void
+    public function register($parameter = null): void
     {
         $di = $this->getDI();
         $definition = function () use ($di) {

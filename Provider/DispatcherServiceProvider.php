@@ -19,7 +19,7 @@ class DispatcherServiceProvider extends AbstractServiceProvider
      *
      * @return void
      */
-    public function register($parameter = null) : void
+    public function register($parameter = null): void
     {
         $di = $this->getDI();
         $di->setShared($this->getName(), function () {

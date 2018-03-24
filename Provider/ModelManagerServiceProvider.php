@@ -16,7 +16,7 @@ class ModelManagerServiceProvider extends AbstractServiceProvider
      *
      * @param mixed|null $parameter
      */
-    public function register($parameter = null) : void
+    public function register($parameter = null): void
     {
         $this->getDI()->setShared($this->getName(), function () {
             return new Manager();

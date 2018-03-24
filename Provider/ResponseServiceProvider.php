@@ -19,7 +19,7 @@ class ResponseServiceProvider extends AbstractServiceProvider
      *
      * @return void
      */
-    public function register($parameter = null) : void
+    public function register($parameter = null): void
     {
         $this->getDI()->setShared($this->getName(), Response::class);
     }

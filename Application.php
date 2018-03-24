@@ -2,7 +2,7 @@
 
 namespace Nilnice\Phalcon;
 
-use Nilnice\Phalcon\Event\DatabaseEvent;
+use Illuminate\Support\Str;
 use Nilnice\Phalcon\Provider\ConfigServiceProvider;
 use Nilnice\Phalcon\Provider\DatabaseServiceProvider;
 use Nilnice\Phalcon\Provider\DispatcherServiceProvider;
@@ -14,7 +14,6 @@ use Nilnice\Phalcon\Provider\ResponseServiceProvider;
 use Nilnice\Phalcon\Provider\RouterServiceProvider;
 use Nilnice\Phalcon\Provider\ServiceProviderInterface;
 use Phalcon\Config;
-use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Di;
 use Phalcon\DiInterface;
 
@@ -25,6 +24,10 @@ class Application
      */
     protected $app;
 
+    /**
+     * @var \Phalcon\DiInterface
+     */
+    protected $di;
     /**
      * @var string|null
      */
@@ -52,11 +55,12 @@ class Application
         $this->di->setShared('application', $this);
         Di::setDefault($this->di);
 
+
         $this->loadProvider();
 
         $this->app = new \Phalcon\Mvc\Application();
-        $this->app->useImplicitView(false);
         $this->app->setDI($this->di);
+        $this->app->useImplicitView(false);
     }
 
     /**
@@ -64,7 +68,7 @@ class Application
      *
      * @return string|null
      */
-    public function getBasePath(string $path = null) : ?string
+    public function getBasePath(string $path = null): ?string
     {
         if ($this->basePath !== null) {
             return $this->basePath . $path;
@@ -84,7 +88,7 @@ class Application
      *
      * @return string|null
      */
-    public function getConfigPath(string $name = null) : ?string
+    public function getConfigPath(string $name = null): ?string
     {
         if (! $name) {
             if (file_exists($path = $this->getBasePath('config') . '/')) {
@@ -110,7 +114,7 @@ class Application
     /**
      * @return \Phalcon\DiInterface
      */
-    public function getDi() : ?DiInterface
+    public function getDi(): DiInterface
     {
         return $this->di;
     }
@@ -118,7 +122,7 @@ class Application
     /**
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         if ($this->app instanceof \Phalcon\Mvc\Application) {
             $this->output();
@@ -128,7 +132,7 @@ class Application
     /**
      * @return bool
      */
-    public function isRunningInConsole() : bool
+    public function isRunningInConsole(): bool
     {
         return PHP_SAPI === 'cli';
     }
@@ -138,7 +142,7 @@ class Application
      *
      * @return void
      */
-    public function output() : void
+    public function output(): void
     {
         try {
             $this->app->handle();
@@ -160,22 +164,21 @@ class Application
      *
      * @return \Nilnice\Phalcon\Application
      */
-    public function register(ServiceProviderInterface $provider) : self
+    public function register(ServiceProviderInterface $provider): self
     {
         if (\get_class($provider) === DatabaseServiceProvider::class) {
             $this->configure('database');
+
+            /** @var \Phalcon\Config $config */
             $config = $this->getDi()->getShared('config');
 
+            /** @var \Phalcon\Config $database */
             if ($database = $config->get('database')) {
-                foreach ($database as $dbname => $value) {
-                    foreach ($value as $key => $item) {
-                        $name = $dbname . ucfirst($key);
-
-                        /** @var \Phalcon\Config $item */
-                        $item = $item->toArray();
-                        $provider->register(['name' => $name, 'item' => $item]);
-                        $this->providers[$provider->getName()] = $provider;
-                    }
+                $connections = $database->get('connections')->toArray();
+                foreach ($connections as $dbname => $item) {
+                    $name = Str::camel($dbname);
+                    $provider->register(['name' => $name, 'item' => $item]);
+                    $this->providers[$provider->getName()] = $provider;
                 }
             }
         } else {
@@ -189,7 +192,7 @@ class Application
     /**
      * @param string $name
      */
-    public function configure(string $name) : void
+    public function configure(string $name): void
     {
         if (isset($this->loadedConfigurations[$name])) {
             return;
@@ -212,7 +215,7 @@ class Application
      *
      * @return void
      */
-    private function loadProvider() : void
+    private function loadProvider(): void
     {
         $providers = [
             ConfigServiceProvider::class,

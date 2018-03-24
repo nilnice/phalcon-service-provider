@@ -14,7 +14,7 @@ class DatabaseServiceProvider extends AbstractServiceProvider
      *
      * @return void
      */
-    public function register($parameter = null) : void
+    public function register($parameter = null): void
     {
         ['name' => $name, 'item' => $item] = $parameter;
         $this->name = $name;

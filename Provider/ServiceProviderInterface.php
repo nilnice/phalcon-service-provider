@@ -11,12 +11,12 @@ interface ServiceProviderInterface extends InjectionAwareInterface
      *
      * @param string $parameter
      */
-    public function register($parameter = null) : void;
+    public function register($parameter = null): void;
 
     /**
      * Get service provider name.
      *
      * @return null|string
      */
-    public function getName() : ?string;
+    public function getName(): ?string;
 }

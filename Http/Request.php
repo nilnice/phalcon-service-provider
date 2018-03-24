@@ -27,7 +27,7 @@ class Request extends \Phalcon\Http\Request
      *
      * @return string
      */
-    public function getUsername() : string
+    public function getUsername(): string
     {
         return $this->getServer('PHP_AUTH_USER');
     }
@@ -37,7 +37,7 @@ class Request extends \Phalcon\Http\Request
      *
      * @return string
      */
-    public function getPassword() : string
+    public function getPassword(): string
     {
         return $this->getServer('PHP_AUTH_PW');
     }
@@ -47,7 +47,7 @@ class Request extends \Phalcon\Http\Request
      *
      * @return null|string
      */
-    public function getToken() : ? string
+    public function getToken(): ? string
     {
         $headerToken = $this->getHeader('AUTHORIZATION');
         $queryToken = $this->getQuery('token');

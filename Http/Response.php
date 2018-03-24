@@ -10,7 +10,7 @@ class Response extends \Phalcon\Http\Response
      * @param \Exception $e
      * @param bool       $devMode
      */
-    public function setExceptionContent(\Exception $e, $devMode = false) : void
+    public function setExceptionContent(\Exception $e, $devMode = false): void
     {
         /** @var \Nilnice\Phalcon\Http\Request $request */
         $request = $this->getDI()->get('request');

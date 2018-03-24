@@ -48,7 +48,7 @@ class DatabaseEvent
      *
      * @return void
      */
-    public function beforeQuery(Event $event, Pdo $connection) : void
+    public function beforeQuery(Event $event, Pdo $connection): void
     {
         if (__FUNCTION__ !== $event->getType()) {
             return;
@@ -64,7 +64,7 @@ class DatabaseEvent
      *
      * @return void
      */
-    public function afterQuery(Event $event, Pdo $connection) : void
+    public function afterQuery(Event $event, Pdo $connection): void
     {
         if (__FUNCTION__ !== $event->getType()) {
             return;
@@ -79,7 +79,7 @@ class DatabaseEvent
     /**
      * @return \Phalcon\Db\Profiler
      */
-    public function getProfiler() : Profiler
+    public function getProfiler(): Profiler
     {
         return $this->profiler;
     }
@@ -89,7 +89,7 @@ class DatabaseEvent
      *
      * @throws \Symfony\Component\Filesystem\Exception\IOException
      */
-    protected function getLogFile() : string
+    protected function getLogFile(): string
     {
         $path = LOGS_DIR . '%s/%s/%s/' . $this->filename;
         $path = sprintf($path, date('Y'), date('m'), date('d'));
