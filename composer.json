@@ -3,7 +3,8 @@
   "description": "A service provider application is based on Phalcon framework.",
   "require": {
     "illuminate/support": "^5.7@dev",
-    "symfony/filesystem": "^4.1@dev"
+    "symfony/filesystem": "^4.1@dev",
+    "lcobucci/jwt": "^4.0@dev"
   },
   "autoload": {
     "psr-4": {
